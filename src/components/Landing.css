@@ -1,0 +1,13 @@
+
+.circular-progress{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.circular-progress-parent{
+    height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #181818;
+}
