@@ -168,9 +168,9 @@ export default function Landing(){
                                              data-id={row._id} 
                                              onClick={(e)=>handelDelete(e)}
                                              style={{
-                                                    borderRadius: 15,
+                                                    
                                                     backgroundColor: "#181d31",
-                                                    color :"#678983"  
+                                                    color :"#F5EFE6"  
                                                 }}>Delete</Button>
                                         </TableRow>
                                         );
