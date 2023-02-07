@@ -45,14 +45,14 @@ export default function Landing(){
         }
      );
      let rows = usersState.allUsers;
-     console.log(rows,usersState);
+     //console.log(rows,usersState);
     
     let userUploadState = useSelector((state)=>{
         return state.userUploadReducer
     }
     );
     let userCreated = userUploadState.createdUser;
-    console.log(userCreated)
+    //console.log(userCreated)
 
      let dispatch = useDispatch()
      const getUserData= async()=>{
@@ -109,7 +109,7 @@ export default function Landing(){
     },[userCreated])
     return(
         <>
-            <Header   upload={<DialogButton />}
+            <Header   upload={<DialogButton upload={"Upload"}/>}
             ></Header>
             {
                 isLoading ? 
@@ -151,14 +151,17 @@ export default function Landing(){
                                                 </TableCell>
                                             );
                                             })}
-                                             <Button variant="outlined" 
+                                             {/* <Button variant="outlined" 
 
                                              style={{
                                                     borderRadius: 15,
                                                     backgroundColor: "#678983",
                                                     color :"black",
                                                     marginRight :"10px" 
-                                                }}>UPDATE</Button>
+                                                }}>UPDATE</Button> */}
+                                            
+                                            <DialogButton update={"Update"} id={row._id}/>
+                                                
                                              <Button variant="outlined"
                                              data-id={row._id} 
                                              onClick={(e)=>handelDelete(e)}

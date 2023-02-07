@@ -82,7 +82,10 @@ BootstrapDialogTitle.propTypes = {
 };
 
 
-export default function DialogButton(props) {
+export default function DialogButton({upload,update,id}) {
+//console.log(upload,update)
+const FORM_NAME = upload ? upload : update;
+//console.log("FORM_NAME",FORM_NAME)
 const {enqueueSnackbar} = useSnackbar();
 let dispatch = useDispatch();
 let dialogState = useSelector((state)=>{
@@ -90,7 +93,7 @@ let dialogState = useSelector((state)=>{
     }
  );
 let open = dialogState.open;
-console.log(open,dialogState)
+//console.log(open,dialogState)
 
 let userState = useSelector((state)=>{
     return state.userUploadReducer
@@ -98,14 +101,7 @@ let userState = useSelector((state)=>{
 );
 let user = userState.user;
 let userCreated = userState.createdUser;
-console.log(userCreated)
-
-// let usersState = useSelector((state)=>{
-//     return state.userReducer
-// }
-// );
-// let userArr = usersState.allUsers;
-// console.log(userArr,usersState);
+//console.log(userCreated);
 
 let handleClose = ()=>{
     dispatch(openDialog(false))
@@ -114,6 +110,37 @@ const handleClickOpen = () => {
     dispatch(openDialog(true))
 };
 
+const createUpdateUser = () =>{
+    if(upload){
+        postUserUpload();
+    }
+    else if(update){
+        updateUser();
+    }
+}
+const updateUser = async()=>{
+    try{
+        let userId = id;
+        const res= await axios.patch(`${config.endpoint}/user/${userId}`,user);
+        console.log(res);
+        enqueueSnackbar("User created successfully", { variant: "success" });
+        dispatch(openDialog(false));
+        dispatch(createdUser(res.data.data));
+    }catch(e){
+        console.log(e);
+        if (e.response) {
+            enqueueSnackbar(e.response.data.message, { variant: "error" });
+          } else {
+            enqueueSnackbar(
+              " Check that the backend is running, reachable and returns valid JSON.",
+              {
+                variant: "error",
+              }
+            );
+          }
+          return null;
+    }
+}
 const postUserUpload = async ()=>{
     if(!validateData(user)) return ;
     try{
@@ -155,28 +182,28 @@ const validateData= (formData)=>{
     }
 
 return (
-    <div>
+    <div style={{display:"inline-block",marginRight:"10px"}}>
       <Button variant="contained" onClick={handleClickOpen} 
        style={{
                 backgroundColor: "#F5EFE6",
                 color :"#181d31",
             }}>
-        <UploadIcon/>
-        Upload
+        {upload && <UploadIcon/>}
+        {FORM_NAME}
       </Button>
       <BootstrapDialog
         onClose={handleClose}
         open={open}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Upload New User
+          {FORM_NAME} User
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <UserForm />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus  variant="contained" onClick={()=>postUserUpload()}>
-            Upload User
+          <Button autoFocus  variant="contained" onClick={()=>createUpdateUser()}>
+            {FORM_NAME} User
           </Button>
           <Button autoFocus varient="outlined" onClick={handleClose}>
             Cancel

@@ -10,7 +10,7 @@ export default function UserForm (props){
         }
     );
     let user = userState.user;
-    console.log(userState)
+    //console.log(userState)
     let dispatch = useDispatch(); 
     const  handelInputChanges = (e)=>{
         const {name,value} = e.target;
