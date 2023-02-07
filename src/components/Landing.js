@@ -16,7 +16,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { margin } from "@mui/system";
+import DialogButton from "./DialogButton";
 
 const columns = [
     { id: 'firstName', label: 'First Name', minWidth: 100 },
@@ -26,9 +26,8 @@ const columns = [
   ];
 
 export default function Landing(){
-    
+    const {enqueueSnackbar} = useSnackbar();
     const [isLoading,setIsLoading] = useState(false);
-    let history =useHistory();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -46,7 +45,15 @@ export default function Landing(){
         }
      );
      let rows = usersState.allUsers;
-     console.log(rows,usersState)
+     console.log(rows,usersState);
+    
+    let userUploadState = useSelector((state)=>{
+        return state.userUploadReducer
+    }
+    );
+    let userCreated = userUploadState.createdUser;
+    console.log(userCreated)
+
      let dispatch = useDispatch()
      const getUserData= async()=>{
         try{
@@ -57,7 +64,19 @@ export default function Landing(){
             setIsLoading(false)
             
         }catch(e){
-            console.log(e);
+            setIsLoading(false);
+            console.log(e)
+            if (e.response) {
+                enqueueSnackbar(e.response.data.message, { variant: "error" });
+              } else {
+                enqueueSnackbar(
+                  " Check that the backend is running, reachable and returns valid JSON.",
+                  {
+                    variant: "error",
+                  }
+                );
+              }
+              return null;
         }
     }
 
@@ -69,14 +88,28 @@ export default function Landing(){
             getUserData();    
         }catch(e){
             console.log(e);
+            if (e.response) {
+                enqueueSnackbar(e.response.data.message, { variant: "error" });
+              } else {
+                enqueueSnackbar(
+                  " Check that the backend is running, reachable and returns valid JSON.",
+                  {
+                    variant: "error",
+                  }
+                );
+              }
+              return null;
         }
     }
     useEffect(()=>{
         getUserData();
     },[])
+    useEffect(()=>{
+        getUserData();
+    },[userCreated])
     return(
         <>
-            <Header 
+            <Header   upload={<DialogButton />}
             ></Header>
             {
                 isLoading ? 
