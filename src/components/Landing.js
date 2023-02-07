@@ -55,6 +55,7 @@ export default function Landing(){
     //console.log(userCreated)
 
      let dispatch = useDispatch()
+
      const getUserData= async()=>{
         try{
             setIsLoading(true)
@@ -115,7 +116,7 @@ export default function Landing(){
                 isLoading ? 
                 (<Grid className="circular-progress-parent">
                     <CircularProgress className="circular-progress"/>
-                    <Typography variant="h6" sx={{color:"#AEBDCA"}}> loading User Data </Typography>
+                    <Typography variant="h6" sx={{color:"black"}}> loading User Data </Typography>
                 </Grid>) 
                 :   (<Box>
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -154,13 +155,14 @@ export default function Landing(){
                                              {/* <Button variant="outlined" 
 
                                              style={{
-                                                    borderRadius: 15,
                                                     backgroundColor: "#678983",
                                                     color :"black",
                                                     marginRight :"10px" 
                                                 }}>UPDATE</Button> */}
-                                            
-                                            <DialogButton update={"Update"} id={row._id}/>
+                                            <div data-id={row._id} style={{display:"inline-block"}}>
+                                            <DialogButton update={"Update"} id={row._id}  />
+                                            </div>
+                                           
                                                 
                                              <Button variant="outlined"
                                              data-id={row._id} 

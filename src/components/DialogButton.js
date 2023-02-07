@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/Upload';
 import { useDispatch, useSelector } from 'react-redux';
-import { createdUser, fetchUsers, openDialog } from '../actions';
+import { createdUser, fetchUsers, openDialog, updateType, updateUserId } from '../actions';
 import UserForm from './UserForm';
 import { validate } from '@material-ui/pickers';
 import { useSnackbar } from 'notistack';
@@ -19,7 +19,7 @@ import { config } from '../App';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiPaper-root':{
-    backgroundColor : "#414040 ",
+    backgroundColor : "#678983 ",
     color:"white"
   },
   '& .MuiDialogContent-root': {
@@ -37,7 +37,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
-      borderColor: 'grey',
+      borderColor: 'white',
     },
   },
   '& .MuiFormLabel-root':{
@@ -93,6 +93,9 @@ let dialogState = useSelector((state)=>{
     }
  );
 let open = dialogState.open;
+let createOrUpdate  = dialogState.updateType;
+let userId = dialogState.userId;
+//console.log(dialogState)
 //console.log(open,dialogState)
 
 let userState = useSelector((state)=>{
@@ -110,17 +113,20 @@ const handleClickOpen = () => {
     dispatch(openDialog(true))
 };
 
-const createUpdateUser = () =>{
-    if(upload){
+const createUpdateUser = (e) =>{
+    // console.log(e.target)
+    // console.log("userID",userId)
+    if(createOrUpdate ==="UPLOAD"){
         postUserUpload();
     }
-    else if(update){
+    else if(createOrUpdate === "UPDATE"){
         updateUser();
     }
 }
 const updateUser = async()=>{
     try{
-        let userId = id;
+        if(!validateData(user)) return ;
+        console.log("updating user Id",userId);
         const res= await axios.patch(`${config.endpoint}/user/${userId}`,user);
         console.log(res);
         enqueueSnackbar("User created successfully", { variant: "success" });
@@ -148,6 +154,7 @@ const postUserUpload = async ()=>{
         console.log(res);
         enqueueSnackbar("User created successfully", { variant: "success" });
         dispatch(openDialog(false));
+        console.log("created user ",res.data.data);
         dispatch(createdUser(res.data.data));
     }catch(e){
         console.log(e);
@@ -183,7 +190,14 @@ const validateData= (formData)=>{
 
 return (
     <div style={{display:"inline-block",marginRight:"10px"}}>
-      <Button variant="contained" onClick={handleClickOpen} 
+      <Button variant="contained" id={id} onClick={(e)=>{
+        handleClickOpen()
+        // console.log(e.target.innerText)
+       // console.log(e.target.id)
+        let u_id= e.target.id
+        dispatch(updateType(e.target.innerText))
+        dispatch(updateUserId(u_id))
+    }} 
        style={{
                 backgroundColor: "#F5EFE6",
                 color :"#181d31",
@@ -196,16 +210,22 @@ return (
         open={open}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {FORM_NAME} User
+            User Details
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <UserForm />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus  variant="contained" onClick={()=>createUpdateUser()}>
+          <Button autoFocus  variant="contained" id={id} onClick={(e)=>createUpdateUser(e)} style={{
+                backgroundColor: "#F5EFE6",
+                color :"#181d31",
+            }}>
             {FORM_NAME} User
           </Button>
-          <Button autoFocus varient="outlined" onClick={handleClose}>
+          <Button autoFocus varient="outlined" onClick={handleClose} style={{
+                backgroundColor: "#F5EFE6",
+                color :"#181d31",
+            }}>
             Cancel
           </Button>
         </DialogActions>
