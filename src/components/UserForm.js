@@ -22,7 +22,7 @@ export default function UserForm (props){
         }
     );
     let userId = dialogState.userId;
-
+    let createOrUpdate  = dialogState.updateType;
 
 
     const  handelInputChanges = (e)=>{
@@ -72,7 +72,7 @@ export default function UserForm (props){
     }
 
     useEffect(()=>{
-        getUserDetails()
+        if (createOrUpdate === "UPDATE") getUserDetails()
         return ()=>{
             dispatch(ulpoadUsersEmptyFileds())
         }
