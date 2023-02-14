@@ -1,4 +1,4 @@
- import { GET_USERS,UPLOAD_USERS,CREATED_USER, UPDATE_TYPE } from "../actions";
+ import { GET_USERS,UPLOAD_USERS,CREATED_USER, UPDATE_TYPE, UPLOAD_EMPTY, EDIT_USER } from "../actions";
 
  const initalState ={
     allUsers :[],
@@ -35,7 +35,12 @@ const userReducer = (state = initalState,action)=>{
         case CREATED_USER : return{
             ...state, createdUser :{ ...action.payload }
         }
-
+        case UPLOAD_EMPTY : return{
+            ...state, user: {}
+        }
+        case EDIT_USER : return {
+            ...state, user : action.payload
+        }
          default : return state;
     }
 }

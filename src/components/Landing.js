@@ -159,7 +159,7 @@ export default function Landing(){
                                                     color :"black",
                                                     marginRight :"10px" 
                                                 }}>UPDATE</Button> */}
-                                            <div data-id={row._id} style={{display:"inline-block"}}>
+                                            <div data-id={row._id} style={{display:"inline-block",marginTop:"6px"}}>
                                             <DialogButton update={"Update"} id={row._id}  />
                                             </div>
                                            

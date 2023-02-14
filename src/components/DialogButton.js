@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/Upload';
 import { useDispatch, useSelector } from 'react-redux';
-import { createdUser, fetchUsers, openDialog, updateType, updateUserId } from '../actions';
+import { createdUser, fetchUsers, openDialog, updateType, updateUserBeforeEdit, updateUserId } from '../actions';
 import UserForm from './UserForm';
 import { validate } from '@material-ui/pickers';
 import { useSnackbar } from 'notistack';
@@ -114,8 +114,8 @@ const handleClickOpen = () => {
 };
 
 const createUpdateUser = (e) =>{
-    // console.log(e.target)
-    // console.log("userID",userId)
+     console.log(e.target)
+    console.log("userID",userId)
     if(createOrUpdate ==="UPLOAD"){
         postUserUpload();
     }
@@ -123,6 +123,7 @@ const createUpdateUser = (e) =>{
         updateUser();
     }
 }
+
 const updateUser = async()=>{
     try{
         if(!validateData(user)) return ;

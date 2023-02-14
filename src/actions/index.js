@@ -4,6 +4,8 @@ export const UPLOAD_USERS = "UPLOAD_USERS";
 export const CREATED_USER ="CREATED_USERS";
 export const UPDATE_TYPE = "UPDATE_TYPE";
 export const UPDATE_USERID = "UPDATE_USERID";
+export const UPLOAD_EMPTY = "UPLOAD_EMPTY";
+export const EDIT_USER ="EDIT_USER";
 export const fetchUsers =(usersData)=>{
     return {
         type: GET_USERS,
@@ -31,6 +33,12 @@ export const createdUser = (userData) =>{
     }
 }
 
+export const ulpoadUsersEmptyFileds = ()=>{
+    return{
+        type : UPLOAD_EMPTY
+    }
+}
+
 export const updateType = (updatetype)=>{
     return {
         type : UPDATE_TYPE,
@@ -41,5 +49,11 @@ export const updateUserId = (userId)=>{
     return {
         type : UPDATE_USERID,
         payload : userId,
+    }
+}
+export const updateUserBeforeEdit = (userData) =>{
+    return{
+        type : EDIT_USER,
+        payload : userData
     }
 }
